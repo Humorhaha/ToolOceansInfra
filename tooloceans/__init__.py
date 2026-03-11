@@ -6,6 +6,7 @@ from .executor import Executor
 from .bus import EventBus, EventHandler
 from .storage import HotStore, ColdStore
 from .hooks import PostEpisodeHook
+from .agent import Policy, PolicyDecision
 
 __all__ = [
     "RunContext",
@@ -16,4 +17,5 @@ __all__ = [
     "EventBus", "EventHandler",
     "HotStore", "ColdStore",
     "PostEpisodeHook",
+    "Policy", "PolicyDecision",
 ]
