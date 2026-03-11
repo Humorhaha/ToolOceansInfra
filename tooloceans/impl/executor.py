@@ -21,7 +21,7 @@ class AsyncExecutor:
             episode_id=ctx.episode_id,
             step_id=ctx.step_id,
             trace_id=ctx.trace_id,
-            payload={"tool_name": call.tool_name, "call_id": call.call_id},
+            payload={"tool_name": call.tool_name, "call_id": call.call_id, "arguments": call.arguments},
         ))
 
         spec, handler = self._registry.get(call.tool_name)
@@ -43,7 +43,7 @@ class AsyncExecutor:
                 episode_id=ctx.episode_id,
                 step_id=ctx.step_id,
                 trace_id=ctx.trace_id,
-                payload={"call_id": call.call_id, "duration_ms": duration_ms},
+                payload={"call_id": call.call_id, "duration_ms": duration_ms, "output": output},
             ))
         except asyncio.TimeoutError:
             duration_ms = (time.monotonic() - t0) * 1000

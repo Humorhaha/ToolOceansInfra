@@ -5,8 +5,9 @@ from .registry import ToolSpec, ToolCapability, ToolRegistry, ToolHandler
 from .executor import Executor
 from .bus import EventBus, EventHandler
 from .storage import HotStore, ColdStore
-from .hooks import PostEpisodeHook
+from .hooks import PostEpisodeHook, StepRewardFn
 from .agent import Policy, PolicyDecision
+from .dataset import DatasetBuilder
 
 __all__ = [
     "RunContext",
@@ -16,6 +17,7 @@ __all__ = [
     "Executor",
     "EventBus", "EventHandler",
     "HotStore", "ColdStore",
-    "PostEpisodeHook",
+    "PostEpisodeHook", "StepRewardFn",
     "Policy", "PolicyDecision",
+    "DatasetBuilder",
 ]
