@@ -7,7 +7,20 @@ from .bus import EventBus, EventHandler
 from .storage import HotStore, ColdStore
 from .hooks import PostEpisodeHook, StepRewardFn
 from .agent import Policy, PolicyDecision
-from .dataset import DatasetBuilder
+from .dataset import (
+    DatasetBuilder,
+    EpisodeDatasetSample,
+    OnlineDatasetBuilder,
+    RLTransition,
+    ToolAction,
+    TransitionDatasetBuilder,
+)
+from .impl.dataset import (
+    EpisodeDatasetBuilder,
+    OfflineTransitionDatasetBuilder,
+    OnlineTransitionDatasetBuilder,
+    QueueOverflowPolicy,
+)
 
 __all__ = [
     "RunContext",
@@ -19,5 +32,10 @@ __all__ = [
     "HotStore", "ColdStore",
     "PostEpisodeHook", "StepRewardFn",
     "Policy", "PolicyDecision",
-    "DatasetBuilder",
+    "DatasetBuilder", "TransitionDatasetBuilder", "OnlineDatasetBuilder",
+    "ToolAction", "RLTransition", "EpisodeDatasetSample",
+    "EpisodeDatasetBuilder",
+    "OfflineTransitionDatasetBuilder",
+    "OnlineTransitionDatasetBuilder",
+    "QueueOverflowPolicy",
 ]

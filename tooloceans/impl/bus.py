@@ -8,8 +8,8 @@ class InProcessEventBus:
         self._handlers: list[EventHandler] = []
 
     async def emit(self, event: Event) -> None:
-        for handler in self._handlers:
-            await handler.handle(event)
+        import asyncio
+        await asyncio.gather(*(h.handle(event) for h in self._handlers))
 
     async def subscribe(self, handler: EventHandler) -> None:
         self._handlers.append(handler)
