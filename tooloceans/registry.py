@@ -21,6 +21,7 @@ class ToolSpec:
     version: str
     input_schema: dict[str, Any]
     output_schema: dict[str, Any]
+    description: str = ""
     capability: ToolCapability = field(default_factory=ToolCapability)
 
 

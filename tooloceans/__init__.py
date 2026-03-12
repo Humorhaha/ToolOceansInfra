@@ -21,6 +21,7 @@ from .impl.dataset import (
     OnlineTransitionDatasetBuilder,
     QueueOverflowPolicy,
 )
+from .impl.registry import tool
 
 __all__ = [
     "RunContext",
@@ -38,4 +39,5 @@ __all__ = [
     "OfflineTransitionDatasetBuilder",
     "OnlineTransitionDatasetBuilder",
     "QueueOverflowPolicy",
+    "tool",
 ]

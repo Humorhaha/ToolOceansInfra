@@ -3,8 +3,7 @@ from typing import Any
 
 import httpx
 
-from tooloceans.impl.registry import InMemoryToolRegistry
-from tooloceans.registry import ToolSpec
+from tooloceans.impl.registry import InMemoryToolRegistry, tool
 
 
 _WEATHER_CODE_LABELS = {
@@ -40,47 +39,18 @@ _WEATHER_CODE_LABELS = {
 
 
 def build_registry() -> InMemoryToolRegistry:
+    import sys
     registry = InMemoryToolRegistry()
-
-    registry.register(
-        ToolSpec(
-            name="resolve_location",
-            version="1",
-            input_schema={"query": "string"},
-            output_schema={"matches": "array"},
-        ),
-        _resolve_location,
-    )
-    registry.register(
-        ToolSpec(
-            name="get_current_weather",
-            version="1",
-            input_schema={"latitude": "number", "longitude": "number"},
-            output_schema={"current": "object"},
-        ),
-        _get_current_weather,
-    )
-    registry.register(
-        ToolSpec(
-            name="get_weather_forecast",
-            version="1",
-            input_schema={"latitude": "number", "longitude": "number", "days": "integer"},
-            output_schema={"forecast": "object"},
-        ),
-        _get_weather_forecast,
-    )
-    registry.register(
-        ToolSpec(
-            name="assess_weather_risk",
-            version="1",
-            input_schema={"forecast": "object"},
-            output_schema={"risk_summary": "object"},
-        ),
-        _assess_weather_risk,
-    )
+    registry.register_module(sys.modules[__name__])
     return registry
 
 
+@tool(
+    name="resolve_location",
+    description="Find the most relevant place match for a location query.",
+    input_schema={"query": "string"},
+    output_schema={"matches": "array"},
+)
 async def _resolve_location(args: dict, ctx) -> dict:
     query = str(args.get("query", "")).strip()
     if not query:
@@ -113,6 +83,12 @@ async def _resolve_location(args: dict, ctx) -> dict:
     return {"query": query, "matches": matches}
 
 
+@tool(
+    name="get_current_weather",
+    description="Fetch the current weather conditions for given coordinates.",
+    input_schema={"latitude": "number", "longitude": "number"},
+    output_schema={"current": "object"},
+)
 async def _get_current_weather(args: dict, ctx) -> dict:
     coordinates = _parse_coordinates(args)
     if "error" in coordinates:
@@ -163,6 +139,12 @@ async def _get_current_weather(args: dict, ctx) -> dict:
     }
 
 
+@tool(
+    name="get_weather_forecast",
+    description="Fetch the daily weather forecast for 1-7 days for given coordinates.",
+    input_schema={"latitude": "number", "longitude": "number", "days": "integer"},
+    output_schema={"forecast_days": "array"},
+)
 async def _get_weather_forecast(args: dict, ctx) -> dict:
     coordinates = _parse_coordinates(args)
     if "error" in coordinates:
@@ -222,6 +204,12 @@ async def _get_weather_forecast(args: dict, ctx) -> dict:
     }
 
 
+@tool(
+    name="assess_weather_risk",
+    description="Summarize weather risk levels (rain, wind, heat, cold) from a forecast object.",
+    input_schema={"forecast": "object"},
+    output_schema={"risk_level": "string", "summary": "string"},
+)
 async def _assess_weather_risk(args: dict, ctx) -> dict:
     forecast = args.get("forecast")
     if not isinstance(forecast, dict):
