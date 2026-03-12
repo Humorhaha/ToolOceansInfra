@@ -149,6 +149,7 @@ class EpisodeManager:
         for _ in range(max_steps):
             decision = await policy.decide(observation, ctx)
             if decision.done or not decision.actions:
+                episode.metadata["final_step"] = decision.metadata
                 break
 
             step_id = str(uuid.uuid4())
@@ -178,6 +179,7 @@ class EpisodeManager:
                 tool_calls=decision.actions,
                 tool_results=results,
                 observation=observation,
+                metadata=decision.metadata,
             )
             await self._score_and_emit_reward(step, step_ctx)
 

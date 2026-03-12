@@ -33,7 +33,7 @@ class Step:
     tool_results: list[ToolResult] = field(default_factory=list)
     observation: Any = None
     reward: float | None = None
-    # action: Action | None = None  # reserved
+    metadata: dict[str, Any] = field(default_factory=dict)
 
 
 @dataclass

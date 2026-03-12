@@ -45,6 +45,7 @@ class LocalFileColdStore:
                 ],
                 observation=s["observation"],
                 reward=s["reward"],
+                metadata=s.get("metadata", {}),
             )
             for s in data["steps"]
         ]
